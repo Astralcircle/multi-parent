@@ -161,6 +161,19 @@ end
 function TOOL:LeftClick( trace )
 	local ent = trace.Entity
 
+	-- Hacky way to hit parented entity
+	if not ent:IsValid() then
+		local owner = self:GetOwner()
+		local trace = util.GetPlayerTrace( owner )
+
+		-- Identical to the toolgun code
+		trace.mask = bit.bor(CONTENTS_SOLID, CONTENTS_MOVEABLE, CONTENTS_MONSTER, CONTENTS_WINDOW, CONTENTS_DEBRIS, CONTENTS_GRATE, CONTENTS_AUX)
+		trace.mins = vector_origin
+		trace.maxs = vector_origin
+		trace.filter = { owner, owner:GetVehicle() }
+		ent = util.TraceHull(trace).Entity
+	end
+
 	if ent:IsValid() and ent:IsPlayer() then return end
 	if SERVER and not util.IsValidPhysicsObject( ent, trace.PhysicsBone ) then return false end
 
@@ -251,6 +264,19 @@ function TOOL:RightClick( trace )
 	end
 
 	local ent = trace.Entity
+
+	-- Hacky way to hit parented entity
+	if not ent:IsValid() then
+		local owner = self:GetOwner()
+		local trace = util.GetPlayerTrace( owner )
+
+		-- Identical to the toolgun code
+		trace.mask = bit.bor(CONTENTS_SOLID, CONTENTS_MOVEABLE, CONTENTS_MONSTER, CONTENTS_WINDOW, CONTENTS_DEBRIS, CONTENTS_GRATE, CONTENTS_AUX)
+		trace.mins = vector_origin
+		trace.maxs = vector_origin
+		trace.filter = { owner, owner:GetVehicle() }
+		ent = util.TraceHull(trace).Entity
+	end
 
 	if ent:IsValid() and ent:IsPlayer() then return false end
 	if SERVER and not util.IsValidPhysicsObject( ent, trace.PhysicsBone ) then return false end
