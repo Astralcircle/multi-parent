@@ -18,6 +18,14 @@ TOOL.ClientConVar[ "weight" ] = "0"
 TOOL.ClientConVar[ "radius" ] = "256"
 TOOL.ClientConVar[ "disableshadow" ] = "0"
 
+if SERVER then
+	util.AddNetworkString("MultiParent_SendNotification")
+
+	if game.SinglePlayer() then
+		util.AddNetworkString("MultiParent_CleanupClientVisuals")
+	end
+end
+
 -- Language strings copied here to avoid having to send the file to clients
 -- TODO: Remove this section and only use localization files if this ever gets uploaded to the Workshop
 if CLIENT then
